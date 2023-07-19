@@ -39,3 +39,21 @@ class AntiPlagiarismApp:
 
         frame = tk.Frame(root)
         frame.pack(padx=400, pady=100)
+
+def compare_files(self):
+        file_type = self.file_type_var.get()
+        first_path = filedialog.askopenfilename(filetypes=self.get_filetypes(file_type))
+        second_path = filedialog.askopenfilename(filetypes=self.get_filetypes(file_type))
+
+        if not first_path or not second_path:
+            self.show_error("Оберіть два файли для порівняння.")
+            return
+
+        first_text = self.read_file(file_type, first_path)
+        second_text = self.read_file(file_type, second_path)
+
+        similarity_score = 1 - levenstein(first_text, second_text) / len(second_text)
+        if (similarity_score <= 0):
+            tk.messagebox.showinfo("Результат порівняння", f"Схожість текстів: {0*100:.2f}%")
+        else:
+            tk.messagebox.showinfo("Результат порівняння", f"Схожість текстів: {similarity_score*100:.2f}%")
