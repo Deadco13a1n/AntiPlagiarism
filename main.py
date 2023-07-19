@@ -63,6 +63,6 @@ def compare_files(self):
 
         similarity_score = 1 - levenstein(first_text, second_text) / len(second_text)
         if (similarity_score <= 0):
-            tk.messagebox.showinfo("Результат порівняння", f"Схожість текстів: {0*100:.2f}%")
+            tk.messagebox.showinfo("Результат порівняння", f"Схожість текстів: {0*100:.1f}%")
         else:
-            tk.messagebox.showinfo("Результат порівняння", f"Схожість текстів: {similarity_score*100:.2f}%")
+            tk.messagebox.showinfo("Результат порівняння", f"Схожість текстів: {similarity_score*100:.1f}%")
