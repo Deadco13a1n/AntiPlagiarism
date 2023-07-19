@@ -40,6 +40,15 @@ class AntiPlagiarismApp:
         frame = tk.Frame(root)
         frame.pack(padx=400, pady=100)
 
+        self.file_type_var = tk.StringVar()
+        self.file_type_var.set("docx")
+
+        self.file_type_menu = tk.OptionMenu(frame, self.file_type_var, "docx", "pdf", "txt")
+        self.file_type_menu.pack()
+
+        self.compare_button = tk.Button(frame, text="Перевірити схожість", command=self.compare_files)
+        self.compare_button.pack()
+
 def compare_files(self):
         file_type = self.file_type_var.get()
         first_path = filedialog.askopenfilename(filetypes=self.get_filetypes(file_type))
