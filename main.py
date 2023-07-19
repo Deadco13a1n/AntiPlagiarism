@@ -22,3 +22,20 @@ def levenstein(str_1, str_2):
             current_row[j] = min(add, delete, change)
 
     return current_row[n]
+
+class AntiPlagiarismApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Перевірка схожості текстових файлів")
+        image_frame = tk.Frame(root)
+        image_frame.pack()
+
+        background_image = Image.open("nubip.png")
+        background_image.thumbnail((background_image.width // 2, background_image.height // 2))
+        background_photo = ImageTk.PhotoImage(background_image)
+        background_label = tk.Label(image_frame, image=background_photo)
+        background_label.image = background_photo
+        background_label.pack()
+
+        frame = tk.Frame(root)
+        frame.pack(padx=400, pady=100)
