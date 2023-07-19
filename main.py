@@ -49,20 +49,52 @@ class AntiPlagiarismApp:
         self.compare_button = tk.Button(frame, text="Перевірити схожість", command=self.compare_files)
         self.compare_button.pack()
 
-def compare_files(self):
-        file_type = self.file_type_var.get()
-        first_path = filedialog.askopenfilename(filetypes=self.get_filetypes(file_type))
-        second_path = filedialog.askopenfilename(filetypes=self.get_filetypes(file_type))
+    def compare_files(self):
+            file_type = self.file_type_var.get()
+            first_path = filedialog.askopenfilename(filetypes=self.get_filetypes(file_type))
+            second_path = filedialog.askopenfilename(filetypes=self.get_filetypes(file_type))
 
-        if not first_path or not second_path:
-            self.show_error("Оберіть два файли для порівняння.")
-            return
+            if not first_path or not second_path:
+                self.show_error("Оберіть два файли для порівняння.")
+                return
 
-        first_text = self.read_file(file_type, first_path)
-        second_text = self.read_file(file_type, second_path)
+            first_text = self.read_file(file_type, first_path)
+            second_text = self.read_file(file_type, second_path)
 
-        similarity_score = 1 - levenstein(first_text, second_text) / len(second_text)
-        if (similarity_score <= 0):
-            tk.messagebox.showinfo("Результат порівняння", f"Схожість текстів: {0*100:.1f}%")
-        else:
-            tk.messagebox.showinfo("Результат порівняння", f"Схожість текстів: {similarity_score*100:.1f}%")
+            similarity_score = 1 - levenstein(first_text, second_text) / len(second_text)
+            if (similarity_score <= 0):
+                tk.messagebox.showinfo("Результат порівняння", f"Схожість текстів: {0*100:.1f}%")
+            else:
+                tk.messagebox.showinfo("Результат порівняння", f"Схожість текстів: {similarity_score*100:.1f}%")
+
+    def read_file(self, file_type, file_path):
+            if file_type == "docx":
+                doc = docx.Document(file_path)
+                return "\n".join(para.text for para in doc.paragraphs)
+            elif file_type == "pdf":
+                with open(file_path, "rb") as file:
+                    pdf = PyPDF2.PdfReader(file)
+                    return "\n".join(page.extract_text() for page in pdf.pages)
+            elif file_type == "txt":
+                with open(file_path, "r") as file:
+                    return file.read()
+    def get_filetypes(self, file_type):
+            if file_type == "docx":
+                return [("Word Documents", "*.docx")]
+            elif file_type == "pdf":
+                return [("PDF Files", "*.pdf")]
+            elif file_type == "txt":
+                return [("Text Files", "*.txt")]
+            else:
+                return []
+    def show_error(self, message):
+            tk.messagebox.showerror("Error", message)
+    def show_info(self, message):
+            tk.messagebox.showinfo("Info", message)
+
+if __name__ == "main":
+    root = tk.Tk()
+    app = AntiPlagiarismApp(root)
+    root.mainloop()
+
+        
